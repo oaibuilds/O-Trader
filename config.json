@@ -1,6 +1,6 @@
 {
     "strategy": "trend_rsi",
-    "polling_interval": 2,
+    "polling_interval": 10,
     "buy_rsi": 35,
     "sell_rsi": 65,
     "ema_fast": 9,

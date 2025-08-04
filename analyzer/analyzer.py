@@ -19,7 +19,21 @@ def main():
 
     df["timestamp"] = pd.to_datetime(df["timestamp"], format="ISO8601")
 
-    df["signal"] = pd.to_numeric(df["signal"], errors="coerce")  # ✅ evita crash si hay strings
+    df["signal"] = pd.to_numeric(df["signal"], errors="coerce")  
+
+    # ⏱️ TIME SUMMARY
+    runtime = df["timestamp"].iloc[-1] - df["timestamp"].iloc[0]
+    start_time = df["timestamp"].iloc[0].replace(microsecond=0)
+    end_time = df["timestamp"].iloc[-1].replace(microsecond=0)
+    runtime = end_time - start_time
+
+    print("\n⏱️ RUNTIME SUMMARY")
+    print("-" * 40)
+    print(f"Start Time        : {start_time}")
+    print(f"End Time          : {end_time}")
+    print(f"Total Runtime     : {str(runtime).replace('0 days ', '').split('.')[0]}")
+    print("-" * 40)
+
 
     # 📈 KPI Summary
     print("\n📊 TRADE SUMMARY")
@@ -27,14 +41,14 @@ def main():
     print(f"Total Trades      : {len(df)}")
     print(f"Buy Trades        : {len(df[df['action'] == 'BUY'])}")
     print(f"Sell Trades       : {len(df[df['action'] == 'SELL'])}")
-    print(f"Final Balance     : {df['balance'].iloc[-1]:.2f}")
+    print(f"Final Balance     : {df['balance'].iloc[-1]:.5f}")
     print(f"Unique Strategies : {df['strategy'].nunique()}")
     print("-" * 40)
 
     for strat in df["strategy"].unique():
         sub = df[df["strategy"] == strat]
         print(f"\n🔹 Strategy: {strat}")
-        print(f"  Trades: {len(sub)} | Final Balance: {sub['balance'].iloc[-1]:.2f}")
+        print(f"  Trades: {len(sub)} | Final Balance: {sub['balance'].iloc[-1]:.5f}")
         print(f"  Avg Signal BUY : {sub[sub['action'] == 'BUY']['signal'].mean():.5f}")
         print(f"  Avg Signal SELL: {sub[sub['action'] == 'SELL']['signal'].mean():.5f}")
 

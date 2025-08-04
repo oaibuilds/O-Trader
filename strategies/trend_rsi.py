@@ -1,19 +1,8 @@
-# strategies/trend_rsi.py
 import pandas as pd
-from logic.trend import is_uptrend, is_downtrend
-
+from utils.trend import is_uptrend, is_downtrend
+from utils.indicators import compute_rsi
 
 prices = []
-
-def rsi(prices: pd.Series, period: int = 14) -> float:
-    if len(prices) < period + 1:
-        return None
-    delta = prices.diff().dropna()
-    gain = delta.where(delta > 0, 0.0)
-    loss = -delta.where(delta < 0, 0.0)
-    avg_gain = gain.rolling(window=period).mean().iloc[-1]
-    avg_loss = loss.rolling(window=period).mean().iloc[-1]
-    return 100.0 if avg_loss == 0 else 100 - (100 / (1 + avg_gain / avg_loss))
 
 def decide_action(price: float, position_open: bool, config: dict):
     global prices
@@ -22,7 +11,7 @@ def decide_action(price: float, position_open: bool, config: dict):
         prices = prices[-100:]
 
     series = pd.Series(prices)
-    rsi_val = rsi(series, 14)
+    rsi_val = compute_rsi(series, period=14)
     if rsi_val is None:
         return "HOLD", None, "UNKNOWN"
 

@@ -5,7 +5,6 @@ import json
 with open("config.json") as f:
     config = json.load(f)
 
-
 class Wallet:
     def __init__(self, balance, max_positions=3):
         self.balance = balance
@@ -20,12 +19,6 @@ class Wallet:
         now = datetime.utcnow().isoformat()
         pnl = 0.0
 
-        # Asegurar que signal sea un float con 2 decimales
-        try:
-            signal = round(float(signal), 2)
-        except (ValueError, TypeError):
-            signal = -1.0
-
         closed_positions = []
         for i, pos in enumerate(self.positions):
             entry = pos["entry"]
@@ -33,18 +26,28 @@ class Wallet:
             delta_pct = delta / entry
 
             if delta_pct >= self.take_profit_pct:
-                pnl = delta * pos["qty"]
-                proceeds = pos["qty"] * price
-                self.balance += proceeds
-                log_trade_extended(now, "SELL", symbol, price, pos["qty"], self.balance, strategy, signal, pnl, trend="TP")
-                closed_positions.append(i)
-
+                reason = "TP"
             elif delta_pct <= -self.stop_loss_pct:
-                pnl = delta * pos["qty"]
-                proceeds = pos["qty"] * price
-                self.balance += proceeds
-                log_trade_extended(now, "SELL", symbol, price, pos["qty"], self.balance, strategy, signal, pnl, trend="SL")
-                closed_positions.append(i)
+                reason = "SL"
+            else:
+                continue
+
+            pnl = delta * pos["qty"]
+            proceeds = pos["qty"] * price
+            self.balance += proceeds
+            log_trade_extended(
+                timestamp=now,
+                action="SELL",
+                symbol=symbol,
+                price=price,
+                qty=pos["qty"],
+                balance=self.balance,
+                strategy=strategy,
+                signal=signal,
+                pnl=pnl,
+                trend=reason
+            )
+            closed_positions.append(i)
 
         for i in reversed(closed_positions):
             self.positions.pop(i)
@@ -53,7 +56,18 @@ class Wallet:
             cost = qty * price
             self.balance -= cost
             self.positions.append({"entry": price, "qty": qty, "time": now})
-            log_trade_extended(now, "BUY", symbol, price, qty, self.balance, strategy, signal, pnl=0.0)
+            log_trade_extended(
+                timestamp=now,
+                action="BUY",
+                symbol=symbol,
+                price=price,
+                qty=qty,
+                balance=self.balance,
+                strategy=strategy,
+                signal=signal,
+                pnl=0.0,
+                trend="-"
+            )
 
         elif action == "SELL" and self.positions:
             pos = self.positions.pop(0)
@@ -61,4 +75,15 @@ class Wallet:
             proceeds = pos["qty"] * price
             pnl = (price - entry) * pos["qty"]
             self.balance += proceeds
-            log_trade_extended(now, "SELL", symbol, price, pos["qty"], self.balance, strategy, signal, pnl, trend="MANUAL")
+            log_trade_extended(
+                timestamp=now,
+                action="SELL",
+                symbol=symbol,
+                price=price,
+                qty=pos["qty"],
+                balance=self.balance,
+                strategy=strategy,
+                signal=signal,
+                pnl=pnl,
+                trend="MANUAL"
+            )

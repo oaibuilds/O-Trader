@@ -1,15 +1,8 @@
-# strategies/ema_crossover.py
-import pandas as pd
 from collections import deque
-from logic.trend import is_uptrend, is_downtrend
-
+from utils.indicators import compute_ema
+from utils.trend_classifier import classify_trend
 
 price_history = deque(maxlen=200)
-
-def compute_ema(prices, period):
-    if len(prices) < period:
-        return None
-    return pd.Series(prices).ewm(span=period, adjust=False).mean().iloc[-1]
 
 def decide_action(price: float, position_open: bool, config: dict):
     global price_history
@@ -29,7 +22,7 @@ def decide_action(price: float, position_open: bool, config: dict):
         return "HOLD", None, "UNKNOWN"
 
     signal = fast - slow
-    trend = "UP" if signal > 0 else "DOWN" if signal < 0 else "SIDEWAYS"
+    trend = classify_trend(signal)
 
     if signal > min_signal and not position_open:
         return "BUY", signal, trend

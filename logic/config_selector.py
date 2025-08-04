@@ -1,19 +1,6 @@
 import json
 
 PRESETS = {
-    "rsi_scalping": {
-        "strategy": "rsi_scalping",
-        "polling_interval": 2,
-        "buy_rsi": 30,
-        "sell_rsi": 70
-    },
-    "ema_crossover": {
-        "strategy": "ema_crossover",
-        "polling_interval": 2,
-        "ema_fast": 9,
-        "ema_slow": 21,
-        "min_signal": 0.001
-    },
     "trend_rsi": {
         "strategy": "trend_rsi",
         "polling_interval": 2,
@@ -22,6 +9,18 @@ PRESETS = {
         "ema_fast": 9,
         "ema_slow": 21,
         "trend_window": 5
+    },
+    "ema_crossover": {
+        "strategy": "ema_crossover",
+        "polling_interval": 2,
+        "ema_fast": 9,
+        "ema_slow": 21,
+        "min_signal": 0.001
+    },
+    "macd_hist": {
+        "strategy": "macd_hist",
+        "polling_interval": 2,
+        "min_macd": 0.001
     }
 }
 
@@ -42,7 +41,6 @@ def select_config():
     sym_choice = int(input("\nChoose a symbol [1/2/...]: ")) - 1
     config["symbol"] = SYMBOLS[sym_choice]
 
-    # Añadir parámetros comunes
     config["max_positions"] = 3
     config["take_profit_pct"] = 0.02
     config["stop_loss_pct"] = 0.01

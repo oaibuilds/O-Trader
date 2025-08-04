@@ -5,7 +5,7 @@ from datetime import datetime
 import time
 from core.wallet import Wallet
 from colorama import init, Fore
-from trade_limiter import TradeLimiter
+from utils.trade_limiter import TradeLimiter
 from logic.data_fetcher import get_price
 from core.qty_logic import calculate_qty
 
@@ -22,7 +22,6 @@ limiter = TradeLimiter(max_trades_per_minute=5)
 
 strategy_module = importlib.import_module(f"strategies.{strategy_name}")
 
-# 💾 Inicializa archivo de trades
 with open("trades.csv", mode="w", newline="") as f:
     writer = csv.writer(f)
     writer.writerow([

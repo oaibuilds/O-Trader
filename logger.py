@@ -8,12 +8,10 @@ def log_trade_extended(timestamp, action, symbol, price, qty, balance, strategy,
     Guarda un trade en formato CSV.
     Campos: timestamp, action, symbol, price, quantity, balance, strategy, signal, pnl, trend
     """
-
-    # Asegurar formato correcto en los campos numéricos
     try:
         signal = round(float(signal), 2)
     except (ValueError, TypeError):
-        signal = -1.0  # Valor por defecto si no es float
+        signal = -1.0  
 
     row = [
         timestamp,
@@ -28,7 +26,6 @@ def log_trade_extended(timestamp, action, symbol, price, qty, balance, strategy,
         trend
     ]
 
-    # Crear archivo si no existe
     file = Path(LOG_FILE)
     exists = file.exists()
 

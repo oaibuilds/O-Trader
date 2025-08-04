@@ -37,5 +37,4 @@ def calculate_qty(signal: float, strategy: str, base_qty: int = 10) -> int:
             return base_qty
 
     else:
-        # Estrategia desconocida → usar cantidad base
         return base_qty

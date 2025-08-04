@@ -1,13 +1,11 @@
-# strategies/macd_hist.py
 import pandas as pd
-from logic.trend import is_uptrend, is_downtrend
-
+from utils.trend import is_uptrend, is_downtrend
 
 prices = []
 
 def compute_macd(series, fast=12, slow=26, signal=9):
     if len(series) < slow + signal:
-        return None, None, None
+        return None, None, None  
     ema_fast = series.ewm(span=fast, adjust=False).mean()
     ema_slow = series.ewm(span=slow, adjust=False).mean()
     macd_line = ema_fast - ema_slow
