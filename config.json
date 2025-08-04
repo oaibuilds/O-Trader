@@ -1,0 +1,13 @@
+{
+    "strategy": "trend_rsi",
+    "polling_interval": 2,
+    "buy_rsi": 35,
+    "sell_rsi": 65,
+    "ema_fast": 9,
+    "ema_slow": 21,
+    "trend_window": 5,
+    "symbol": "DOGEUSDT",
+    "max_positions": 3,
+    "take_profit_pct": 0.02,
+    "stop_loss_pct": 0.01
+}
