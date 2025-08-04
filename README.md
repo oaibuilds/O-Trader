@@ -104,8 +104,4 @@ Win Rate          : 48%
 
 Learn more soon at: [oaibuilds.com](https://oaibuilds.com)
 
----
 
-## 📄 License
-
-MIT License. See [LICENSE](LICENSE) for more info.
