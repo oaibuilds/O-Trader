@@ -1,0 +1,48 @@
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.pklz
+*.egg-info/
+*.egg
+
+# Archivos de configuración o entorno
+.env
+config.json
+
+# Archivos de datos y logs
+trades.csv
+*.log
+
+# Directorios de cache
+.mypy_cache/
+.pytest_cache/
+.cache/
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+ENV/
+
+# Archivos de IDEs y editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de análisis y gráficos
+*.png
+*.jpg
+*.jpeg
+*.pdf
+
+# Archivos temporales
+*.bak
+*.swp
