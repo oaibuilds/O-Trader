@@ -100,7 +100,7 @@ Win Rate          : 48%
 
 ## 🌐 The O Project
 
-> `O-Trader` is a core module of **The O Project**, focused on long-term intelligence, autonomy and global capital leverage.
+> `O-Trader` is a core module of **The O Project**, focused on automating tasks and global capital leverage.
 
 Learn more soon at: [oaibuilds.com](https://oaibuilds.com)
 
